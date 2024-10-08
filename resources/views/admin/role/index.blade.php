@@ -37,7 +37,6 @@
                             <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
                                 <th style="width: 5%">NO</th>
                                 <th style="width: 20%">Nama Role</th>
-                                {{-- <th style="width: 20%">Status</th> --}}
                                 <th style="width: 10%">Actions</th>
                             </tr>
                         </thead>
@@ -50,22 +49,12 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->name ?? 'N/A' }}</td>
-                                    {{-- <td>
-                                        @if ($item->status == 1)
-                                            Aktif
-                                        @elseif($item->status == 0)
-                                            Tidak Aktif
-                                        @endif
-                                    </td> --}}
+                                  
                                     <td>
 
                                         <a href="{{ route('roles.edit', ['id' => Crypt::encrypt($item->id)]) }}"
                                             title="Edit Role User" class="btn btn-icon btn-success">
                                             <i class="far fa-edit"></i>
-                                        </a>
-                                        <a href="{{ route('menu_access.index', ['role_id' => Crypt::encrypt($item->id)]) }}"
-                                            title="Akses Role User" class="btn btn-icon btn-primary">
-                                            <i class=" fas fa-key"></i>
                                         </a>
                                         <button title="Hapus Role" type="button" class="btn btn-icon btn-danger"
                                             data-bs-toggle="modal" data-bs-target="#hapus{{ $item->id }}">

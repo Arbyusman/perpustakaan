@@ -80,9 +80,9 @@
                                                 placeholder="Masukkan Nama Lengkap" />
                                         </div>
                                         <div class="mb-4">
-                                            <label>NRP/NIP:</label>
-                                            <input type="text" class="form-control" name="nrp"
-                                                placeholder="Masukkan NRP" />
+                                            <label>NIP/NIDN:</label>
+                                            <input type="text" class="form-control" name="identification_number"
+                                                placeholder="Masukkan NIP/NIDN" />
                                         </div>
                                         <div class="">
                                             <label>Jenis Kelamin:</label>
@@ -101,29 +101,22 @@
                                             <label>Role:</label>
                                             <div class="form-check form-check-custom form-check-solid">
                                                 @foreach ($role as $itemRole)
-                                                    <input class="form-check-input " style="margin-right:5px "
+                                                    @if ($fingerId && $itemRole->name === 'Admin')
+                                                        @continue
+                                                    @endif
+
+                                                    <input class="form-check-input" style="margin-right:5px"
                                                         type="radio" value="{{ $itemRole->id }}"
                                                         id="role_{{ $itemRole->id }}" name="role" />
-                                                    <label class="form-check-label " style="margin-right:5px "
+                                                    <label class="form-check-label" style="margin-right:5px"
                                                         for="role_{{ $itemRole->id }}">
                                                         {{ $itemRole->name }}
                                                     </label>
                                                 @endforeach
                                             </div>
+
                                         </div>
 
-                                        <div class="my-2">
-                                            <label>Pangkat:</label>
-                                            <div class="form-check form-check-custom form-check-solid">
-                                                <select class="form-control" name="police_rank_id">
-                                                    @foreach ($policeRank as $rank)
-                                                        <option value="{{ $rank->id }}">
-                                                            {{ $rank->name ?? 'N/A' }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>  
 
                                     </div>
                                 </div>
@@ -140,22 +133,31 @@
                                             placeholder="Masukkan Email" />
                                     </div>
                                 </div>
-
-
                                 <div class="form-group row">
                                     <div class="col-lg-6">
-                                        <label>Password:</label>
-                                        <input type="password" class="form-control" id="password"
-                                            placeholder="Masukkan Password" />
+                                        <label>Finger Print:</label>
+                                        <input type="text" id="finger_print_id" name="finger_print_id"
+                                            class="form-control" placeholder="Masukkan Finger Print"
+                                            value="{{ $fingerId ?? 0 }}" readonly />
                                     </div>
-                                    <div class="col-lg-6">
-                                        <label>Konfirmasi Password:</label>
-                                        <input type="password" class="form-control" id="confirmPassword"
-                                            name="password" placeholder="Masukkan Konfirmasi Password" />
-                                        <p id="passwordMatchMessage" style="color: red;"></p>
-                                    </div>
+
                                 </div>
 
+                                @if (!$fingerId)
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Password:</label>
+                                            <input type="password" class="form-control" id="password"
+                                                placeholder="Masukkan Password" />
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Konfirmasi Password:</label>
+                                            <input type="password" class="form-control" id="confirmPassword"
+                                                name="password" placeholder="Masukkan Konfirmasi Password" />
+                                            <p id="passwordMatchMessage" style="color: red;"></p>
+                                        </div>
+                                    </div>
+                                @endif
 
 
                                 <div class="card-footer">
@@ -175,6 +177,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
         const imageInput = document.querySelector('.image-input-wrapper');
@@ -210,6 +214,29 @@
                 passwordMatchMessage.textContent = 'Password tidak cocok.';
                 passwordMatchMessage.style.color = 'red';
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#ambil-data').on('click', function() {
+                $.ajax({
+                    url: '{{ route('fingerprint.add') }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log("data", data)
+                        if (data.status === 'success') {
+                            $('#finger_print_id').val(data.data);
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', textStatus, errorThrown);
+                        alert('Failed to fetch fingerprint data.');
+                    }
+                });
+            });
         });
     </script>
 </x-default-layout>

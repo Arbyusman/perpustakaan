@@ -19,11 +19,10 @@ class UsersSeeder extends Seeder
         $demoUser = User::create([
             'name'              => "admin",
             'email'             => 'admin@gmail.com',
-            'nik'             => '11223344',
+            'identification_number'             => '11223344',
             'password'          => Hash::make('admin'),
             'role_id'          => 1,
             'email_verified_at' => now(),
         ]);
-
     }
 }

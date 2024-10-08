@@ -22,10 +22,6 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             
             // WEB
-            MenuSeeder::class,
-            SubMenuSeeder::class,
-            MenuAccessSeeder::class,
-            SubMenuAccessSeeder::class,
             SettingSeeder::class,
 
         ]);

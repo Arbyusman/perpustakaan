@@ -7,8 +7,7 @@
                         <div class="card-header d-flex justify-content-between">
                             <h3 class="card-title">{{ $title }}</h3>
                             <div class="col-lg-6 mt-2 p-2 text-right d-flex justify-content-end">
-                                <a href="{{ route('users.index') }}"
-                                    class="btn btn-light-primary font-weight-bolder me-2">
+                                <a href="{{ url('dashboard') }}" class="btn btn-light-primary font-weight-bolder me-2">
                                     <i class="ki-duotone ki-double-left fs-1">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
@@ -17,15 +16,15 @@
                             </div>
                         </div>
 
-                        <form class="form" action="{{ route('users.update', ['id' => Crypt::encrypt($user->id)]) }}"
+                        <form class="form" action="{{ route('profile.update', ['id' => Crypt::encrypt($user->id)]) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-lg-6 align-items-center justify-content-center d-flex">
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="mt-1">
+                                                {{-- @dd($user->avatar) --}}
                                                 <style>
                                                     .image-input-placeholder {
                                                         background-image: url({{ $user->avatar ? asset('storage/images/' . $user->avatar) : asset('assets/media/svg/files/blank-image.svg') }});
@@ -80,9 +79,9 @@
                                                 name="name" placeholder="Masukkan Nama Lengkap" />
                                         </div>
                                         <div class="mb-4">
-                                            <label>NIP/NIDN:</label>
+                                            <label>NRP/NIP:</label>
                                             <input value="{{ $user->nrp }}" type="text" class="form-control"
-                                                name="identification_number" placeholder="Masukkan NIP/NIDN" />
+                                                name="nrp" placeholder="Masukkan NRP" />
                                         </div>
                                         <div class="">
                                             <label>Jenis Kelamin:</label>
@@ -96,37 +95,6 @@
                                                     Perempuan</option>
                                             </select>
                                         </div>
-
-                                        <div class="my-2">
-                                            <label>Role:</label>
-                                            <div class="form-check form-check-custom form-check-solid">
-                                                @foreach ($role as $itemRole)
-                                                    <input class="form-check-input " style="margin-right:5px "
-                                                        type="radio" value="{{ $itemRole->id }}"
-                                                        id="role_{{ $itemRole->id }}" name="role"
-                                                        @if ($itemRole->id == $user->role_id) checked @endif />
-                                                    <label class="form-check-label " style="margin-right:5px "
-                                                        for="role_{{ $itemRole->id }}">
-                                                        {{ $itemRole->name }}
-                                                    </label>
-                                                @endforeach
-                                            </div>
-                                        </div>
-
-                                        <div class="my-2">
-                                            <label>Pangkat:</label>
-                                            <div class="form-check form-check-custom form-check-solid">
-                                                <select class="form-control" name="police_rank_id">
-                                                    @foreach ($policeRank as $rank)
-                                                        <option value="{{ $rank->id }}"
-                                                            @if ($rank->id == $user->police_rank_id) selected @endif>
-                                                            {{ $rank->name ?? 'N/A' }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
 
@@ -144,7 +112,28 @@
                                 </div>
 
 
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label>Password Lama</label>
+                                        <input type="password" class="form-control" id="passwordLama"
+                                            name="currentPassword" placeholder="Masukkan Password Lama" />
+                                    </div>
 
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label>Password Baru:</label>
+                                        <input type="password" class="form-control" id="password"
+                                            placeholder="Masukkan Password baru" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label>Konfirmasi Password Baru:</label>
+                                        <input type="password" class="form-control" id="confirmPassword"
+                                            name="password" placeholder="Masukkan Konfirmasi Password" />
+                                        <p id="passwordMatchMessage" style="color: red;"></p>
+                                    </div>
+                                </div>
 
                                 <div class="card-footer">
                                     <div class="row">
@@ -178,6 +167,24 @@
             } else {
                 imageInput.style.backgroundImage =
                     `url('{{ Auth::user()->foto ? asset('image/foto/' . Auth::user()->foto) : asset('media/users/blank.png') }}')`;
+            }
+        });
+    </script>
+    <script>
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordMatchMessage = document.getElementById('passwordMatchMessage');
+
+        confirmPasswordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (password === confirmPassword) {
+                passwordMatchMessage.textContent = 'Password cocok.';
+                passwordMatchMessage.style.color = 'green';
+            } else {
+                passwordMatchMessage.textContent = 'Password tidak cocok.';
+                passwordMatchMessage.style.color = 'red';
             }
         });
     </script>

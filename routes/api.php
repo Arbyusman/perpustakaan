@@ -20,6 +20,7 @@ use App\Http\Controllers\API\TypeFlightApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UsersApiController;
+use App\Http\Controllers\FingerPrintDataController;
 use App\Models\Aircraft;
 
 /*
@@ -38,7 +39,7 @@ use App\Models\Aircraft;
 // });
 
 
-Route::prefix('/v1')->group(function () {
-
-  
-});
+// Route::prefix('/v1')->group(function () {
+//     Route::post('/fingerprint/store', [FingerPrintDataController::class, 'CreateFingerPrint'])->name('fingerprintdata.store');
+//     Route::get('/fingerprint/add', [FingerPrintDataController::class, 'GetFingerPrint'])->name('fingerprint.add');
+// });

@@ -15,8 +15,8 @@ class SettingSeeder extends Seeder
     {
         $data = [
             [
-                'name' => 'Perpustakaan',
-                'short_name' => 'Perpustakaan',
+                'name' => 'Absen UMK',
+                'short_name' => 'Absen UMK',
                 'small_icon' => 'default_logo.png',
                 'large_icon' => 'default_logo.png',
                 'background_login' => 'default_background.jpg',

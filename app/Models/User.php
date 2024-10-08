@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,7 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,13 +21,14 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
+        'finger_id',
         'email',
         'password',
         'role_id',
         'jenis_kelamin',
         'avatar',
         'phone',
-        'nik',
+        'identification_number',
         'address',
         'email_verified_at' => 'datetime',
     ];
@@ -65,30 +67,9 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
-    public function policeRank()
-    {
-        return $this->belongsTo(PoliceRank::class, 'police_rank_id');
-    }
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function flightPlan()
-    {
-        return $this->hasOne(FlightPlan::class, 'pilot_in_command');
-    }
-
-    public function flightPlanCreate()
-    {
-        return $this->hasOne(FlightPlan::class, 'created_by');
-    }
-    public function flightPlanUpdate()
-    {
-        return $this->hasOne(FlightPlan::class, 'updated_by');
-    }
-    public function flightPlanDelete()
-    {
-        return $this->hasOne(FlightPlan::class, 'deleted_by');
-    }
 }

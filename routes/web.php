@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FingerPrintDataController;
 use App\Http\Controllers\MenuAccessController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
@@ -36,6 +38,14 @@ Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']
 require __DIR__ . '/auth.php';
 
 
+Route::post('/fingerprint/store', [FingerPrintDataController::class, 'CreateFingerPrint'])->name('fingerprintdata.store');
+Route::get('/fingerprint/data', action: [FingerPrintDataController::class, 'GetFingerPrint'])->name('fingerprint.add');
+
+ ## Absen
+ Route::controller(AbsenController::class)->group(function () {
+    Route::get('absen/store',  'store');
+});
+
 Route::middleware(['role_web:1', 'verified'])->group(function () {
 
     // User
@@ -60,49 +70,10 @@ Route::middleware(['role_web:1', 'verified'])->group(function () {
         Route::put('admin/roles/update/{id}', 'update')->name('roles.update');
         Route::delete('admin/roles/hapus/{id}', 'destroy')->name('roles.delete');
     });
-
-    ## Menu
-    Route::controller(MenuController::class)->group(function () {
-        Route::get('admin/menus', 'index')->name('menus.index');
-        Route::get('admin/menus/search', 'search')->name('menus.search');
-        Route::get('admin/menus/create', 'create')->name('menus.create');
-        Route::post('admin/menus/store', 'store')->name('menus.store');
-        Route::get('admin/menus/edit/{id}', 'edit')->name('menus.edit');
-        Route::put('admin/menus/update/{id}', 'update')->name('menus.update');
-        Route::delete('admin/menus/hapus/{id}', 'destroy')->name('menus.delete');
-    });
-
-    ## Sub Menu
-    Route::controller(SubMenuController::class)->group(function () {
-        Route::get('admin/submenus/{menu_id}', 'index')->name('submenus.index');
-        Route::get('admin/submenus/search/{menu_id}', 'search')->name('submenus.search');
-        Route::get('admin/submenus/create/{menu_id}', 'create')->name('submenus.create');
-        Route::post('admin/submenus/store/{menu_id}', 'store')->name('submenus.store');
-        Route::get('admin/submenus/edit/{menu_id}/{id}', 'edit')->name('submenus.edit');
-        Route::put('admin/submenus/update/{menu_id}/{id}', 'update')->name('submenus.update');
-        Route::delete('admin/submenus/hapus/{menu_id}/{id}', 'destroy')->name('submenus.delete');
-    });
-
-    ## Menu Akses
-    Route::controller(MenuAccessController::class)->group(function () {
-        Route::get('admin/menus/access/{role_id}', 'index')->name('menu_access.index');
-        Route::get('admin/menus/access/search/{role_id}', 'search')->name('menu_access.search');
-        Route::get('admin/menus/access/create/{role_id}', 'create')->name('menu_access.create');
-        Route::post('admin/menus/access/store/{role_id}', 'store')->name('menu_access.store');
-        Route::get('admin/menus/access/edit/{role_id}/{id}', 'edit')->name('menu_access.edit');
-        Route::put('admin/menus/access/update/{role_id}/{id}', 'update')->name('menu_access.update');
-        Route::delete('admin/menus/access/hapus/{role_id}/{id}', 'destroy')->name('menu_access.delete');
-    });
-
-    ## Sub Menu Akses
-    Route::controller(SubMenuAccessController::class)->group(function () {
-        Route::get('admin/submenus/access/{role_id}/{menu_id}', 'index')->name('submenu_access.index');
-        Route::get('admin/submenus/access/search/{role_id}/{menu_id}', 'search')->name('submenu_access.search');
-        Route::get('admin/submenus/access/create/{role_id}/{menu_id}', 'create')->name('submenu_access.create');
-        Route::post('admin/submenus/access/store/{role_id}/{menu_id}', 'store')->name('submenu_access.store');
-        Route::get('admin/submenus/access/edit/{role_id}/{menu_id}/{id}', 'edit')->name('submenu_access.edit');
-        Route::put('admin/submenus/access/update/{role_id}/{menu_id}/{id}', 'update')->name('submenu_access.update');
-        Route::delete('admin/submenus/access/hapus/{role_id}/{menu_id}/{id}', 'destroy')->name('submenu_access.delete');
+    ## Absen
+    Route::controller(AbsenController::class)->group(function () {
+        Route::get('admin/absen',  'index')->name('absen.index');
+      
     });
 
 

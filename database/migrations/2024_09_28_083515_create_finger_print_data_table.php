@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('finger_print_data', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('link');
-            $table->string('attribute');
-            $table->integer('position');
-            $table->integer('category');
-            $table->softDeletes();
+            $table->string('finger_print_id');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('finger_print_data');
     }
 };

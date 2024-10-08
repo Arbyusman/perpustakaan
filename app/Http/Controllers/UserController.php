@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PoliceRank;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
@@ -30,12 +29,12 @@ class UserController extends Controller
         return view('admin.users.index', compact('title', 'users', 'description'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $title = "Tambah Pengguna";
+        $fingerId = $request->query('finger_id');
         $role = Role::all();
-        $policeRank = PoliceRank::all();
-        $view = view('admin.users.create', compact('title', 'role','policeRank'));
+        $view = view('admin.users.create', compact('title', 'role', 'fingerId'));
         $view = $view->render();
         return $view;
     }
@@ -46,20 +45,12 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => 'required|string|email|max:255',
-            'nrp' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    if ($value !== null && (strlen($value) !== 8 && strlen($value) !== 18)) {
-                        $fail($attribute . ' must be either 8 or 18 characters.');
-                    }
-                },
-            ],
-
-            'password' => 'required|string|max:100|min:5',
+            'identification_number' => 'required',
+            'password' => 'nullable|string|max:100|min:5',
             'jenis_kelamin' => 'required|string|max:20',
             'phone' => 'nullable|string|max:20',
             'role' => 'required|max:10',
-            'police_rank_id' => 'required|max:10'
+            'finger_id' => 'nullable|max:10',
         ]);
 
         if ($validator->fails()) {
@@ -67,11 +58,11 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        $userExists = User::where('nrp', $request->nrp)->exists();
+        $userExists = User::where('identification_number', $request->identification_number)->exists();
 
         if ($userExists) {
-            Alert::toast('NRP/NIP sudah terdaftar', 'error');
-            return redirect()->back()->withErrors('NRP/NIP sudah terdaftar');
+            Alert::toast('NIP/NIDN sudah terdaftar', 'error');
+            return redirect()->back()->withErrors('NIP/NIDN sudah terdaftar');
         }
 
         $userExistsByEmail = User::where('email', $request->email)->exists();
@@ -83,12 +74,12 @@ class UserController extends Controller
 
         $input = [
             'name' => $request->name,
-            'nrp' => $request->nrp,
+            'identification_number' => $request->identification_number,
             'email' => $request->email,
             'phone' => $request->phone,
             'role_id' => $request->role,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'police_rank_id' => $request->police_rank_id,
+            'finger_id' => $request->finger_print_id,
             'password' => Hash::make($request->password),
             'email_verified_at' => now(),
         ];
@@ -114,8 +105,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $title = "Edit Pengguna";
         $role = Role::all();
-        $policeRank = PoliceRank::all();
-        $view = view('admin.users.edit', compact('title', 'role', 'user','policeRank'));
+        $view = view('admin.users.edit', compact('title', 'role', 'user',));
         $view = $view->render();
         return $view;
     }
@@ -129,19 +119,11 @@ class UserController extends Controller
             'name' => 'string|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => 'string|email|max:255',
-            'nrp' => [
-                'string',
-                function ($attribute, $value, $fail) {
-                    if ($value !== null && (strlen($value) !== 8 && strlen($value) !== 18)) {
-                        $fail($attribute . ' must be either 8 or 18 characters.');
-                    }
-                },
-            ],
-
+            'identification_number' => 'string',
             'jenis_kelamin' => 'string|max:100',
             'phone' => 'string|max:20',
             'role' => 'required|max:10',
-            'police_rank_id' => 'required|max:10'
+            'finger_id' => 'required|max:10'
         ]);
 
         if ($validator->fails()) {
@@ -150,24 +132,24 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        if ($request->nrp) {
-            $userExisting = User::where('nrp', $request->nrp)->first();
+        if ($request->identification_number) {
+            $userExisting = User::where('identification_number', $request->identification_number)->first();
 
             if ($userExisting && $userExisting->id != $user->id) {
-                Alert::toast('NRP sudah terdaftar', 'error');
+                Alert::toast('identification_number sudah terdaftar', 'error');
                 return redirect()->back()
-                    ->withErrors('NRP sudah terdaftar');
+                    ->withErrors('identification_number sudah terdaftar');
             }
         }
 
         $input = [
             'name' => $request->name,
-            'nrp' => $request->nrp,
+            'identification_number' => $request->identification_number,
             'jenis_kelamin' => $request->jenis_kelamin,
             'email' => $request->email,
             'phone' => $request->phone,
             'role_id' => $request->role,
-            'police_rank_id' => $request->police_rank_id,
+            'finger_id' => $request->finger_print_id,
         ];
 
         try {
@@ -213,24 +195,17 @@ class UserController extends Controller
             'name' => 'nullable|string|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => 'nullable|string|email|max:255',
-            'nrp' => [
-                'nullable',
-                function ($attribute, $value, $fail) {
-                    if ($value !== null && (strlen($value) !== 8 && strlen($value) !== 18)) {
-                        $fail($attribute . ' must be either 8 or 18 characters.');
-                    }
-                },
-            ],
-
+            'identification_number' =>
+            'nullable',
             'phone' => 'nullable|string|max:20',
         ]);
-        if ($request->nrp) {
-            $userExisting = User::where('nrp', $request->nrp)->first();
+        if ($request->identification_number) {
+            $userExisting = User::where('identification_number', $request->identification_number)->first();
 
             if ($userExisting && $userExisting->id != $user->id) {
-                Alert::toast('NRP/NIP sudah terdaftar', 'error');
+                Alert::toast('NIP/NIDN sudah terdaftar', 'error');
                 return redirect()->back()
-                    ->withErrors('NRP/NIP sudah terdaftar');
+                    ->withErrors('NIP/NIDN sudah terdaftar');
             }
         }
 
@@ -254,7 +229,7 @@ class UserController extends Controller
         }
         $input = [
             'name' => $request->name,
-            'nrp' => $request->nrp,
+            'identification_number' => $request->identification_number,
             'email' => $request->email,
             'phone' => $request->phone,
         ];
@@ -283,7 +258,7 @@ class UserController extends Controller
         Alert::toast('Profil Berhasil Di Ubah', 'success');
         return redirect()->back()->with('status', 'Profil Berhasil Di Ubah');
     }
-    
+
     public function destroy(Request $request)
     {
         $userId = Crypt::decrypt($request->id);
@@ -292,20 +267,20 @@ class UserController extends Controller
         Alert::toast('user Berhasil Dihapus', 'success');
         return redirect('/admin/users')->with('status', 'user Berhasil Dihapus');
     }
-    
+
     public function resetPassword(Request $request, $userId)
     {
         $validator = Validator::make($request->all(), [
             'resetPassword' => 'required|string|min:5|max:100',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect('/admin/users/edit')->withErrors($validator)->withErrors('Gagal reset password');
         }
         $user = User::findOrFail($userId);
         $user->password = Hash::make($request->resetPassword);
         $user->save();
-        
+
         Alert::toast('Password Berhasil Di Reset', 'success');
         return redirect()->back()->with('status', 'Password Berhasil Di Reset');
     }

@@ -80,9 +80,9 @@
                                                 name="name" placeholder="Masukkan Nama Lengkap" />
                                         </div>
                                         <div class="mb-4">
-                                            <label>NIP/NIDN:</label>
+                                            <label>NRP/NIP:</label>
                                             <input value="{{ $user->nrp }}" type="text" class="form-control"
-                                                name="identification_number" placeholder="Masukkan NIP/NIDN" />
+                                                name="nrp" placeholder="Masukkan NRP" />
                                         </div>
                                         <div class="">
                                             <label>Jenis Kelamin:</label>
