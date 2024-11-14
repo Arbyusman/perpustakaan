@@ -208,7 +208,7 @@ class AbsenController extends Controller
 
         $data = [
             'nim' => $nim,
-            'datetime' => time(),
+            'datetime' => 1731652446,
         ];
 
         $apiUrl = 'https://1c4d-180-251-156-238.ngrok-free.app/api/v1/simakad-absen';
