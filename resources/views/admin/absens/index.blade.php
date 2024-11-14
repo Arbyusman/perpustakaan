@@ -31,9 +31,9 @@
                                 <th style="width: 10%">Role</th>
                                 <th style="width: 10%">Absen Masuk</th>
                                 <th style="width: 10%">Status Absen Masuk</th>
-                                <th style="width: 20%">Absen Pulang</th>
-                                <th style="width: 10%">Status Absen Pulang</th>
-                                <th style="width: 20%">Waktu Kerja</th>
+                                {{-- <th style="width: 20%">Absen Pulang</th> --}}
+                                {{-- <th style="width: 10%">Status Absen Pulang</th> --}}
+                                {{-- <th style="width: 20%">Waktu Kerja</th> --}}
                                 {{-- <th style="width: 20%">Actions</th> --}}
                             </tr>
                         </thead>
@@ -49,9 +49,9 @@
                                     <td>{{ $item->user->role->name ?? 'N/A' }}</td>
                                     <td>{{ $item->check_in ?? 'N/A' }}</td>
                                     <td>{{ $item->status_check_in ?? 'N/A' }}</td>
-                                    <td>{{ $item->check_out ?? 'N/A' }}</td>
-                                    <td>{{ $item->status_check_out ?? 'N/A' }}</td>
-                                    <td>{{ $item->total_work_time ?? 'N/A' }}</td>
+                                    {{-- <td>{{ $item->check_out ?? 'N/A' }}</td> --}}
+                                    {{-- <td>{{ $item->status_check_out ?? 'N/A' }}</td> --}}
+                                    {{-- <td>{{ $item->total_work_time ?? 'N/A' }}</td> --}}
                                 </tr>
                             @endforeach
 

@@ -146,4 +146,54 @@ class AbsenController extends Controller
             ]);
         }
     }
+    public function storeFinger(Request $request)
+    {
+        $fingerId = $request->query('finger_id');
+
+        $user = User::where('finger_id', $fingerId)->first();
+
+        if (!$user) {
+            $existingFingerPrintData = FingerPrintData::first();
+            if ($existingFingerPrintData) {
+                $existingFingerPrintData->delete();
+            }
+
+            FingerPrintData::create([
+                'finger_print_id' => $fingerId,
+            ]);
+
+            return response()->json(['message' => 'User not found, please contact admin to register your fingerprint.'], 200);
+        }
+
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $currentTime = Carbon::now()->format('H:i:s');
+
+        $attendance = Absen::where('user_id', $user->id)
+            ->where('attendance_date', $currentDate)
+            ->first();
+
+        if ($attendance) {
+            return response()->json(['message' => 'User has already checked in for today'], 200);
+        } else {
+            $attendance = Absen::create([
+                'user_id' => $user->id,
+                'attendance_date' => $currentDate,
+                'check_in' => $currentTime,
+                'status_check_in' => null, 
+            ]);
+
+            if ($currentTime > '12:00:00') {
+                $attendance->status_check_in = 'Late Absen';
+            } else {
+                $attendance->status_check_in = 'On-time Absen';
+            }
+
+            $attendance->save();
+
+            return response()->json([
+                'message' => 'Absen recorded successfully',
+                'attendance' => $attendance
+            ]);
+        }
+    }
 }

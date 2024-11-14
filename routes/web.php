@@ -43,7 +43,7 @@ Route::get('/fingerprint/data', action: [FingerPrintDataController::class, 'GetF
 
  ## Absen
  Route::controller(AbsenController::class)->group(function () {
-    Route::get('absen/store',  'store');
+    Route::get('absen/store',  'storeFinger');
 });
 
 Route::middleware(['role_web:1', 'verified'])->group(function () {

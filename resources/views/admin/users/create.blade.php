@@ -80,9 +80,9 @@
                                                 placeholder="Masukkan Nama Lengkap" />
                                         </div>
                                         <div class="mb-4">
-                                            <label>NIP/NIDN:</label>
+                                            <label>NIM:</label>
                                             <input type="text" class="form-control" name="identification_number"
-                                                placeholder="Masukkan NIP/NIDN" />
+                                                placeholder="Masukkan NIM" />
                                         </div>
                                         <div class="">
                                             <label>Jenis Kelamin:</label>
@@ -101,7 +101,7 @@
                                             <label>Role:</label>
                                             <div class="form-check form-check-custom form-check-solid">
                                                 @foreach ($role as $itemRole)
-                                                    @if ($fingerId && $itemRole->name === 'Admin')
+                                                    @if ($fingerId && $itemRole->name === 'Admin' || $fingerId && $itemRole->name === 'Dosen'  )
                                                         @continue
                                                     @endif
 
