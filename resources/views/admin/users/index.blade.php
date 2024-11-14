@@ -36,9 +36,8 @@
                             <tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
                                 <th style="width: 5%">NO</th>
                                 <th style="width: 20%">Nama Lengkap</th>
-                                <th style="width: 10%">NRP</th>
+                                <th style="width: 10%">NIM</th>
                                 <th style="width: 20%">Email</th>
-                                <th style="width: 20%">No HP</th>
                                 <th style="width: 20%">Actions</th>
                             </tr>
                         </thead>
@@ -51,18 +50,17 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->nrp ?? 'N/A' }}</td>
+                                    <td>{{ $item->identification_number ?? 'N/A' }}</td>
                                     <td>{{ $item->email ?? 'N/A' }}</td>
-                                    <td>{{ $item->phone ?? 'N/A' }}</td>
                                     <td>
-                                        <a href="{{ route('users.edit', ['id' => Crypt::encrypt($item->id)]) }}"
+                                        {{-- <a href="{{ route('users.edit', ['id' => Crypt::encrypt($item->id)]) }}"
                                             title="Edit users" class="btn btn-icon btn-success">
                                             <i class="ki-duotone ki-user-edit fs-1">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                                 <span class="path3"></span>
                                             </i>
-                                        </a>
+                                        </a> --}}
                                         <button title="Hapus User" type="button" class="btn btn-danger"
                                             data-bs-toggle="modal" data-bs-target="#kt_modal{{ $item->id }}">
                                             <i class="fas fa-trash-alt"></i>
@@ -100,7 +98,7 @@
                                                             </span>
                                                         </div>
                                                         <input class="form-control col-6" type="hidden"
-                                                            id="resetPassword" value="{{ $item->nrp ?? '12345678' }}"
+                                                            id="resetPassword" value="{{ $item->identification_number ?? '12345678' }}"
                                                             name="resetPassword" placeholder="Reset password" />
 
                                                         <div class="pb-12 justify-content-center  d-flex">
