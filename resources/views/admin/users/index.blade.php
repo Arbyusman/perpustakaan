@@ -18,14 +18,14 @@
                             </i>
                             Refresh
                         </a>
-                        <a href="{{ route('users.create') }}" class="btn btn-primary font-weight-bolder ">
+                        {{-- <a href="{{ route('users.create') }}" class="btn btn-primary font-weight-bolder ">
                             <i class="ki-duotone ki-plus fs-1                    ">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
                                 <span class="path3"></span>
                             </i>
                             Tambah
-                        </a>
+                        </a> --}}
 
                     </div>
 
