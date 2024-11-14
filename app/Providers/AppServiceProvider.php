@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\ServiceProvider;
 use App\Traits\UserAuditable;
+use Illuminate\Support\Facades\URL;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Update defaultStringLength
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+        
         Builder::defaultStringLength(191);
         KTBootstrap::init();
     }
