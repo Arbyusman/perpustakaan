@@ -16,7 +16,7 @@ class AbsenController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('store','storeFinger');
+        $this->middleware('auth')->except('store','storeFinger','triggerDataPost');
     }
 
     public function index()
