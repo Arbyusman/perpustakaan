@@ -11,7 +11,7 @@
 
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{ route('users.index') }}" class="btn btn-success font-weight-bold  me-5">
+                        <a href="{{ route('absen.index') }}" class="btn btn-success font-weight-bold  me-5">
                             <i class="ki-duotone ki-arrows-loop fs-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
