@@ -39,7 +39,7 @@ require __DIR__ . '/auth.php';
 
 
 Route::post('/fingerprint/store', [FingerPrintDataController::class, 'CreateFingerPrint'])->name('fingerprintdata.store');
-Route::get('/fingerprint/data', action: [FingerPrintDataController::class, 'GetFingerPrint'])->name('fingerprint.add');
+Route::get('/fingerprint/data',  [FingerPrintDataController::class, 'GetFingerPrint'])->name('fingerprint.add');
 
  ## Absen
  Route::controller(AbsenController::class)->group(function () {

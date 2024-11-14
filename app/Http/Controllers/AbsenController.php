@@ -8,6 +8,7 @@ use App\Models\Absen;
 use App\Models\FingerPrintData;
 use App\Models\User;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -173,13 +174,14 @@ class AbsenController extends Controller
             ->first();
 
         if ($attendance) {
+            $this->triggerDataPost($attendance?->user?->identification_number);
             return response()->json(['message' => 'User has already checked in for today'], 200);
         } else {
             $attendance = Absen::create([
                 'user_id' => $user->id,
                 'attendance_date' => $currentDate,
                 'check_in' => $currentTime,
-                'status_check_in' => null, 
+                'status_check_in' => null,
             ]);
 
             if ($currentTime > '12:00:00') {
@@ -190,10 +192,35 @@ class AbsenController extends Controller
 
             $attendance->save();
 
+            $this->triggerDataPost($attendance?->user?->identification_number);
+
             return response()->json([
                 'message' => 'Absen recorded successfully',
                 'attendance' => $attendance
             ]);
+        }
+    }
+
+
+    function triggerDataPost($nim)
+    {
+        $client = new Client();
+
+        $data = [
+            'nim' => $nim,
+            'datetime' => time(),
+        ];
+
+        $apiUrl = 'https://example.com/api/trigger';
+
+        try {
+            $client->post($apiUrl, [
+                'json' => $data,
+                'timeout' => 0,
+                'connect_timeout' => 0,
+                'http_errors' => false,
+            ]);
+        } catch (\Exception $e) {
         }
     }
 }
