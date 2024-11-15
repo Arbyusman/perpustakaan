@@ -211,7 +211,7 @@ class AbsenController extends Controller
             'datetime' => 1731652446,
         ];
 
-        $apiUrl = 'https://1c4d-180-251-156-238.ngrok-free.app/api/v1/simakad-absen';
+        $apiUrl = 'https://a3b8-212-102-51-99.ngrok-free.app/api/v1/simakad-absen';
 
         try {
             $client->post($apiUrl, [
