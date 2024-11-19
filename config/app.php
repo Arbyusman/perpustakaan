@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Monitoring Pesawat'),
+    'name' => env('APP_NAME', 'ABSEN UMK'),
 
     /*
     |--------------------------------------------------------------------------
