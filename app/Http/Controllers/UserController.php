@@ -263,6 +263,7 @@ class UserController extends Controller
     {
         $userId = Crypt::decrypt($request->id);
         $user = User::findOrFail($userId);
+        $user->absens()->delete();
         $user->delete();
         Alert::toast('user Berhasil Dihapus', 'success');
         return redirect('/admin/users')->with('status', 'user Berhasil Dihapus');

@@ -45,6 +45,16 @@
                                 <div class="form-group row">
                                     <div class="col-lg-6 mt-5">
                                         <div class="">
+                                            <label>URL Absen:</label>
+                                            <input value="{{ $setting->base_url_absens }}" type="text"
+                                                class="form-control" name="base_url_absens"
+                                                placeholder="Masukkan Nama Aplikasi" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-6 mt-5">
+                                        <div class="">
                                             <label>Logo Kecil Aplikasi:</label>
                                             <div class="mt-5 col-12">
                                                 <style>

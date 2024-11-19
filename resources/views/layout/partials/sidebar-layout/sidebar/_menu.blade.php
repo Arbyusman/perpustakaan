@@ -32,6 +32,14 @@
                     </a>
                 </div>
             </div>
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div class="menu-item">
+                    <a class="menu-link" href={{ route('settings.edit')}}>
+                        <span class="menu-icon"></span>
+                        <span class="menu-title">Setting WEB</span>
+                    </a>
+                </div>
+            </div>
 
         </div>
         <!--end::Menu-->
