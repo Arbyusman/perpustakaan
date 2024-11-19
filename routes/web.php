@@ -59,6 +59,7 @@ Route::middleware(['role_web:1', 'verified'])->group(function () {
         Route::post('user/update/profile/{id}', 'updateProfile')->name("profile.update");
         Route::post('admin/users/delete', 'destroy')->name("users.delete");
         Route::post('admin/users/reset-password/{id}', 'resetPassword')->name('users.resetPassword');
+        Route::post('admin/users/import-users', 'import')->name('users.import');
     });
 
     ## Role

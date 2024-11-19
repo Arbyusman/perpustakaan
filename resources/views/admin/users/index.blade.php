@@ -18,14 +18,43 @@
                             </i>
                             Refresh
                         </a>
-                        {{-- <a href="{{ route('users.create') }}" class="btn btn-primary font-weight-bolder ">
-                            <i class="ki-duotone ki-plus fs-1                    ">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                            </i>
-                            Tambah
-                        </a> --}}
+
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#impor">
+                            Import Users
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="impor" tabindex="-1" aria-labelledby="imporLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="imporLabel">Import Users</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @csrf
+                                            <input type="file" name="file" required>
+                                            <div class="mt-3">
+                                                <span class="badge badge-danger">NOTE</span>
+                                                <span>Ensure the file format is correct: <strong>("NIM",
+                                                        "FULL NAME")</strong></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary">Import Users</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -69,7 +98,7 @@
                                         @if (Auth::user()->role_id == 1)
                                             <button title="Reset Password" type="button" class="btn btn-primary"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#kt_modal_reset{{ $item->id }}">   
+                                                data-bs-target="#kt_modal_reset{{ $item->id }}">
                                                 <i class="ki-duotone ki-eraser fs-1">
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
@@ -79,8 +108,8 @@
 
 
                                             <div class="modal fade" id="kt_modal_reset{{ $item->id }}"
-                                                tabindex="-1" 
-                                                aria-labelledby="modalTitle{{ $item->id }}" aria-hidden="true">
+                                                tabindex="-1" aria-labelledby="modalTitle{{ $item->id }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <form class="form-group modal-content p-5"
                                                         action="{{ route('users.resetPassword', ['id' => $item->id]) }}"
@@ -98,7 +127,8 @@
                                                             </span>
                                                         </div>
                                                         <input class="form-control col-6" type="hidden"
-                                                            id="resetPassword" value="{{ $item->identification_number ?? '12345678' }}"
+                                                            id="resetPassword"
+                                                            value="{{ $item->identification_number ?? '12345678' }}"
                                                             name="resetPassword" placeholder="Reset password" />
 
                                                         <div class="pb-12 justify-content-center  d-flex">
