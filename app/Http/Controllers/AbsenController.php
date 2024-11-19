@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAbsenRequest;
 use App\Http\Requests\UpdateAbsenRequest;
 use App\Models\Absen;
 use App\Models\FingerPrintData;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -16,7 +17,7 @@ class AbsenController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('store','storeFinger','triggerDataPost');
+        $this->middleware('auth')->except('store', 'storeFinger', 'triggerDataPost');
     }
 
     public function index()
@@ -204,14 +205,16 @@ class AbsenController extends Controller
 
     function triggerDataPost($nim)
     {
+
         $client = new Client();
+        $setting = Setting::find(1);
 
         $data = [
             'nim' => $nim,
             'datetime' => 1731652446,
         ];
 
-        $apiUrl = 'https://bdc4-103-94-11-154.ngrok-free.app/api/v1/simakad-absen';
+        $apiUrl = $setting->base_url_absens ?? 'https://bdc4-103-94-11-154.ngrok-free.app/api/v1/simakad-absen';
 
         try {
             $client->post($apiUrl, [
