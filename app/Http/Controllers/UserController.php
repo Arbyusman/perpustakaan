@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -261,12 +262,23 @@ class UserController extends Controller
 
     public function destroy(Request $request)
     {
-        $userId = Crypt::decrypt($request->id);
-        $user = User::findOrFail($userId);
-        $user->absens()->delete();
-        $user->delete();
-        Alert::toast('user Berhasil Dihapus', 'success');
-        return redirect('/admin/users')->with('status', 'user Berhasil Dihapus');
+        DB::beginTransaction();
+
+        try {
+            $userId = Crypt::decrypt($request->id);
+            $user = User::findOrFail($userId);
+            $user->absens()->delete();
+            $user->delete();
+
+            DB::commit();
+
+            Alert::toast('User Berhasil Dihapus', 'success');
+            return redirect('/admin/users')->with('status', 'User Berhasil Dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::toast('Terjadi kesalahan saat menghapus user', 'error');
+            return redirect()->back()->withErrors('Terjadi kesalahan saat menghapus user');
+        }
     }
 
     public function resetPassword(Request $request, $userId)
