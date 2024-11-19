@@ -18,12 +18,11 @@ class UsersImport implements ToModel
     {
         $this->rowIndex++;
         return new User([
-            'name' => $row[1],
-            'email' => str_replace(' ', '_', $row[1]) . "@gmail.com",
-            'identification_number' => $row[0],
-            'password'              => Hash::make($row[0]),
+            'name'                  => $row['name'],
+            'email'                 => str_replace(' ', '_', $row['name']) . "@gmail.com",
+            'identification_number' => $row['nim'],
+            'password'              => Hash::make($row['nim']),
             'role_id'               => 3,
-            'finger_id'               => $row[0],
             'email_verified_at'     => now(),
         ]);
     }
