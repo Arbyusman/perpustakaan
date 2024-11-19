@@ -48,7 +48,7 @@
                                             <label>URL Absen:</label>
                                             <input value="{{ $setting->base_url_absens }}" type="text"
                                                 class="form-control" name="base_url_absens"
-                                                placeholder="Masukkan Nama Aplikasi" />
+                                                placeholder="Masukkan URL absen Aplikasi" />
                                         </div>
                                     </div>
                                 </div>
