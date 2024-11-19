@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
-              $table->string('base_url_absens');
+              $table->string('base_url_absens')->nullable();
         });
     }
 
